@@ -36,6 +36,7 @@ python -c "import mujoco_playground"  # 开始下载MuJoCo Menagerie库
     **使用例子**
     ```bash
     sudo apt install ffmpeg 
+    # make sure your are in the root of project
     python examples/train_jax_ppo.py --env_name CartpoleBalance
     ```
 
@@ -47,6 +48,7 @@ python -c "import mujoco_playground"  # 开始下载MuJoCo Menagerie库
     ```
     **使用例子**
     ```bash
+    # make sure your are in the root of project
     python examples/train_jax_ppo.py --env_name PandaPickCube --rscope_envs 16 --run_evals=False --deterministic_rscope=True
     # In a separate terminal
     python -m rscope
