@@ -1,0 +1,6 @@
+[submodule "tools/mujoco_playground"]
+	path = tools/mujoco_playground
+	url = https://github.com/120090162/mujoco_playground.git
+[submodule "tools/rscope"]
+	path = tools/rscope
+	url = https://github.com/120090162/rscope.git
