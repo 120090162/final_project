@@ -57,6 +57,24 @@ python -c "import mujoco_playground"  # 开始下载MuJoCo Menagerie库
     pkill -9 -f rscope
     ```
 
+## **定义新环境**
+- 训练
+```bash
+./scripts/run_train.sh \
+    --env_name=Go1JoystickFlatTerrain \
+    --use_wandb=True \
+    --log_training_metrics=True \
+    --run_evals=False
+```
+- 单纯可视化
+```bash
+./scripts/run_train.sh \
+    --env_name=Go1JoystickFlatTerrain \
+    --play_only=True \
+    --load_checkpoint_path=logs/<env_name>/<timestamp>/checkpoints \
+    --num_videos=<video_num_to_render>
+```
+
 ## **测试**
 ```bash
 # sim to sim
