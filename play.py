@@ -14,12 +14,17 @@ import sys
 sys.stdout = open(sys.stdout.fileno(), mode="w", buffering=1)
 sys.stderr = open(sys.stderr.fileno(), mode="w", buffering=1)
 
-# Add the current directory to Python path to find utils module
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-
 from utils.keyboard_reader import KeyboardController
 from utils.params import _ONNX_DIR
+
+from absl import app
+from absl import flags
+
+_POLICY_NAME = flags.DEFINE_string(
+    "policy_name",
+    None,
+    f"Name of the policy. Must be located in {_ONNX_DIR}.",
+)
 
 
 class OnnxController:
@@ -84,7 +89,7 @@ class OnnxController:
             data.ctrl[:] = onnx_pred * self._action_scale + self._default_angles
 
 
-def load_callback(model=None, data=None):
+def load_callback(model=None, data=None, **kwargs):
     mujoco.set_mjcb_control(None)
 
     model = mujoco.MjModel.from_xml_path(
@@ -101,7 +106,7 @@ def load_callback(model=None, data=None):
     model.opt.timestep = sim_dt
 
     policy = OnnxController(
-        policy_path=(_ONNX_DIR / "Go1JoystickFlatTerrain_policy.onnx").as_posix(),
+        policy_path=(_ONNX_DIR / f"{_POLICY_NAME.value}_policy.onnx").as_posix(),
         default_angles=np.array(model.keyframe("home").qpos[7:]),
         n_substeps=n_substeps,
         action_scale=0.5,
@@ -115,5 +120,18 @@ def load_callback(model=None, data=None):
     return model, data
 
 
-if __name__ == "__main__":
+def main(argv):
+    del argv  # Unused.
+
+    if _POLICY_NAME.value is None:
+        raise ValueError("Please provide a policy name with --policy_name flag.")
+
+    policy_path = _ONNX_DIR / f"{_POLICY_NAME.value}_policy.onnx"
+    if not policy_path.exists():
+        raise FileNotFoundError(f"Policy file not found: {policy_path}")
+
     viewer.launch(loader=load_callback)
+
+
+if __name__ == "__main__":
+    app.run(main)

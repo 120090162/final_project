@@ -139,7 +139,29 @@ def make_policy_network(
 
 
 def transfer_weights(jax_params, tf_model):
-    """Transfer weights from JAX parameters to TensorFlow model."""
+    """
+    Transfer weights from a JAX parameter dictionary to the TensorFlow model.
+
+    Parameters:
+    - jax_params: dict
+      Nested dictionary with structure {block_name: {layer_name: {params}}}.
+      For example:
+      {
+        'CNN_0': {
+          'Conv_0': {'kernel': np.ndarray},
+          'Conv_1': {'kernel': np.ndarray},
+          'Conv_2': {'kernel': np.ndarray},
+        },
+        'MLP_0': {
+          'hidden_0': {'kernel': np.ndarray, 'bias': np.ndarray},
+          'hidden_1': {'kernel': np.ndarray, 'bias': np.ndarray},
+          'hidden_2': {'kernel': np.ndarray, 'bias': np.ndarray},
+        }
+      }
+
+    - tf_model: tf.keras.Model
+      An instance of the adapted VisionMLP model containing named submodules and layers.
+    """
     for layer_name, layer_params in jax_params.items():
         try:
             tf_layer = tf_model.get_layer("MLP_0").get_layer(name=layer_name)
@@ -218,6 +240,8 @@ def main(argv):
     network_factory = functools.partial(
         ppo_networks.make_ppo_networks,
         **ppo_params.network_factory,
+        # We need to explicitly call the normalization function here since only the brax
+        # PPO train.py script creates it if normalize_observations is True.
         preprocess_observations_fn=running_statistics.normalize,
     )
     ppo_network = network_factory(obs_size, act_size)
@@ -240,6 +264,7 @@ def main(argv):
     # Extract mean/std for normalization
     mean = params[0].mean[obs_key]
     std = params[0].std[obs_key]
+    # Convert mean/std jax arrays to tf tensors.
     mean_std = (tf.convert_to_tensor(mean), tf.convert_to_tensor(std))
 
     # Create TensorFlow policy network
@@ -252,7 +277,7 @@ def main(argv):
 
     # Build the model
     example_input = tf.zeros((1, state_obs_size))
-    example_output = tf_policy_network(example_input)
+    example_output = tf_policy_network(example_input)[0]
     print(f"TensorFlow model output shape: {example_output.shape}")
 
     # Transfer weights from JAX to TensorFlow
@@ -263,6 +288,7 @@ def main(argv):
     tf_policy_network.output_names = ["continuous_actions"]
 
     print("Converting to ONNX...")
+    # opset 11 matches isaac lab.
     model_proto, _ = tf2onnx.convert.from_keras(
         tf_policy_network,
         input_signature=spec,
@@ -273,13 +299,15 @@ def main(argv):
 
     # Verify ONNX model
     print("\nVerifying ONNX model...")
+    # Run inference with ONNX Runtime
+    output_names = ["continuous_actions"]
     providers = ["CPUExecutionProvider"]
     onnx_session = rt.InferenceSession(str(output_path), providers=providers)
 
     # Test with ones
     test_input = np.ones((1, state_obs_size), dtype=np.float32)
     onnx_input = {"obs": test_input}
-    onnx_pred = onnx_session.run(["continuous_actions"], onnx_input)[0][0]
+    onnx_pred = onnx_session.run(output_names, onnx_input)[0][0]
 
     # Compare with JAX prediction
     if isinstance(obs_size, dict):
@@ -308,6 +336,17 @@ def main(argv):
         print("⚠ Warning: ONNX and JAX predictions differ significantly.")
 
     print(f"\nConversion complete! ONNX model saved to: {output_path}")
+
+    # import matplotlib.pyplot as plt
+
+    # print(onnx_pred.shape)
+    # print(example_output.shape)
+    # print(jax_pred.shape)
+    # plt.plot(onnx_pred, label="onnx")
+    # plt.plot(example_output, label="tensorflow")
+    # plt.plot(jax_pred, label="jax")
+    # plt.legend()
+    # plt.show()
 
 
 if __name__ == "__main__":

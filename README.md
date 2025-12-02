@@ -89,4 +89,6 @@ python utils/brax_to_onnx.py \
 uv pip install onnxruntime pygame
 
 python examples/play_go1_keyboard.py
+
+python play.py --policy_name=<_policy前面的名称>
 ```
