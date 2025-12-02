@@ -77,6 +77,16 @@ python -c "import mujoco_playground"  # 开始下载MuJoCo Menagerie库
 
 ## **测试**
 ```bash
+# convert brax model to onnx type
+uv pip install "tensorflow-cpu>=2.19.0" "tf2onnx>=1.16.1" "onnx>=1.16.0" onnxruntime "ml-dtypes==0.5.4" "numpy==1.26.4"
+python utils/brax_to_onnx.py \
+    --checkpoint_path=logs/<env_name>/<timestamp>/checkpoints/<step_num> \
+    --env_name=<env_name>
+```
+
+```bash
 # sim to sim
-uv pip install onnxruntime
+uv pip install onnxruntime pygame
+
+python examples/play_go1_keyboard.py
 ```
