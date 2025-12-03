@@ -79,6 +79,16 @@ python -c "import mujoco_playground"  # 开始下载MuJoCo Menagerie库
 
 ## **测试**
 ```bash
+# sim to sim
+uv pip install pygame
+
+python sim2sim/play_go1_keyboard.py --policy_name=<_policy前面的名称>
+python sim2sim/play_go2_keyboard.py --policy_name=<_policy前面的名称>
+```
+
+## **工具**
+
+```bash
 # convert brax model to onnx type
 uv pip install "tensorflow-cpu>=2.19.0" "tf2onnx>=1.16.1" "onnx>=1.16.0" onnxruntime "ml-dtypes==0.5.4" "numpy==1.26.4"
 python utils/brax_to_onnx.py \
@@ -87,9 +97,8 @@ python utils/brax_to_onnx.py \
 ```
 
 ```bash
-# sim to sim
-uv pip install pygame
+# convert urdf to mjcf
+uv pip install urdf2mjcf
 
-python sim2sim/play_go1_keyboard.py --policy_name=<_policy前面的名称>
-python sim2sim/play_go2_keyboard.py --policy_name=<_policy前面的名称>
+python utils/urdf2xml.py --urdf_path=sample/robot.urdf
 ```

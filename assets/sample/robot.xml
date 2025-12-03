@@ -1,0 +1,293 @@
+<mujoco model="simple_humanoid">
+  <default>
+    <default class="robot">
+      <default class="motor">
+        <joint armature="0.001" frictionloss="0.1" damping="0.1" actuatorfrcrange="-10.0 10.0" />
+        <motor ctrlrange="-572.958 572.958" />
+      </default>
+      <default class="visual">
+        <geom material="visualgeom" contype="0" conaffinity="0" group="2" />
+      </default>
+      <default class="collision">
+        <geom material="collision_material" condim="3" contype="0" conaffinity="1" priority="1" group="1" solref="0.005 1" solimp="0.99 0.999 1e-05" friction="1 0.01 0.01" />
+      </default>
+    </default>
+    <default class="backlash">
+      <joint damping="0.01" frictionloss="0" armature="0.01" limited="true" range="-0.5 0.5" />
+    </default>
+    <default class="floor">
+      <geom contype="1" conaffinity="1" group="0" type="plane" size="0 0 0.05" material="groundplane" rgba="1 1 1 0.3" />
+    </default>
+  </default>
+
+  <compiler angle="degree" />
+
+  <asset>
+    <material name="WAIST_LINK1_APP" rgba="0.6 1.0 0.6 1" />
+    <material name="WAIST_LINK2_APP" rgba="0.6 0.8 0.6 1" />
+    <material name="WAIST_LINK3_APP" rgba="0.8 0.8 0.8 1" />
+    <material name="default_material" rgba="0.7 0.7 0.7 1" />
+    <material name="collision_material" rgba="1.0 0.28 0.1 0.9" />
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3" markrgb="0.8 0.8 0.8" width="300" height="300" />
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.2" />
+  </asset>
+
+  <worldbody>
+    <body name="BODY" pos="0.00000000 0.00000000 0.72350000" quat="1 0 0 0" childclass="robot">
+      <freejoint name="floating_base" />
+      <geom name="BODY_visual_0" pos="0 0 0.0955" quat="1.0 0.0 0.0 0.0" material="default_material" type="box" size="0.025 0.025 0.0555" class="visual" />
+      <geom name="BODY_visual_1" pos="0 0 0" quat="1.0 0.0 0.0 0.0" material="default_material" type="box" size="0.04 0.04 0.04" class="visual" />
+      <body name="IMU" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+        <inertial pos="0 0 0" quat="1.0 0.0 0.0 0.0" mass="0" diaginertia="1.0 1.0 1.0" />
+        <geom name="IMU_visual" pos="0 0 0" quat="1.0 0.0 0.0 0.0" material="default_material" type="box" size="0.025 0.025 0.025" class="visual" />
+        <site name="IMU_site" pos="0.0 0.0 0.0" />
+      </body>
+      <body name="RLEG_LINK1" pos="0 -0.09 0" quat="1.0 0.0 0.0 0.0">
+        <joint name="RLEG_HIP_R" type="hinge" ref="0.0" class="motor" range="-20 90" axis="1 0 0" />
+        <joint name="RLEG_HIP_R_backlash" class="backlash" axis="1 0 0" />
+        <inertial pos="0 -0.1 0" quat="1.0 0.0 0.0 0.0" mass="2.5" diaginertia="1.0 1.0 1.0" />
+        <geom name="RLEG_LINK1_visual" pos="0 0 0" quat="0.7071231599922605 0.0 0.0 0.7070904020014415" material="default_material" type="cylinder" size="0.05 0.05" class="visual" />
+        <body name="RLEG_LINK2" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+          <joint name="RLEG_HIP_P" type="hinge" ref="0.0" class="motor" range="-30.0001 30.0001" axis="0 1 0" />
+          <joint name="RLEG_HIP_P_backlash" class="backlash" axis="0 1 0" />
+          <inertial pos="0 0 -0.15" quat="1.0 0.0 0.0 0.0" mass="2" diaginertia="1.0 1.0 1.0" />
+          <geom name="RLEG_LINK2_visual" pos="0 0 0" quat="0.7071231599922605 0.0 0.0 0.7070904020014415" material="default_material" type="cylinder" size="0.05 0.05" class="visual" />
+          <body name="RLEG_LINK3" pos="0 0 -0.3535" quat="1.0 0.0 0.0 0.0">
+            <joint name="RLEG_HIP_Y" type="hinge" ref="0.0" class="motor" range="-120.035 40.107" axis="0 0 1" />
+            <joint name="RLEG_HIP_Y_backlash" class="backlash" axis="0 0 1" />
+            <inertial pos="0 -0.04 0" quat="1.0 0.0 0.0 0.0" mass="5.1" diaginertia="1.0 1.0 1.0" />
+            <geom name="RLEG_LINK3_visual_0" pos="0 0 0.22675" quat="1.0 0.0 0.0 0.0" material="default_material" type="box" size="0.05 0.05 0.07675" class="visual" />
+            <geom name="RLEG_LINK3_visual_1" pos="0 0 0.1" quat="0.7071054825112363 0.7071080798594735 0.0 0.0" material="default_material" type="cylinder" size="0.05 0.05" class="visual" />
+            <body name="RLEG_LINK4" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+              <joint name="RLEG_KNEE" type="hinge" ref="0.0" class="motor" range="0 150" axis="0 1 0" />
+              <joint name="RLEG_KNEE_backlash" class="backlash" axis="0 1 0" />
+              <inertial pos="0 0 -0.3" quat="1.0 0.0 0.0 0.0" mass="7" diaginertia="1.0 1.0 1.0" />
+              <geom name="RLEG_LINK4_visual_0" pos="0 0 0" quat="0.7071054825112363 0.7071080798594735 0.0 0.0" material="default_material" type="cylinder" size="0.05 0.05" class="visual" />
+              <geom name="RLEG_LINK4_visual_1" pos="0 0 -0.15" quat="1.0 0.0 0.0 0.0" material="default_material" type="box" size="0.05 0.05 0.1" class="visual" />
+              <body name="RLEG_LINK5" pos="0 0 -0.3" quat="1.0 0.0 0.0 0.0">
+                <joint name="RLEG_ANKLE_P" type="hinge" ref="0.0" class="motor" range="0 150" axis="0 1 0" />
+                <joint name="RLEG_ANKLE_P_backlash" class="backlash" axis="0 1 0" />
+                <inertial pos="-0.15 0 0" quat="1.0 0.0 0.0 0.0" mass="2.5" diaginertia="1.0 1.0 1.0" />
+                <geom name="RLEG_LINK5_visual" pos="0 0 0" quat="1 0 0 0" material="default_material" type="cylinder" size="0.05 0.05" class="visual" />
+                <body name="r_ankle" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+                  <joint name="RLEG_ANKLE_R" type="hinge" ref="0.0" class="motor" range="-72.7656 38.9611" axis="1 0 0" />
+                  <joint name="RLEG_ANKLE_R_backlash" class="backlash" axis="1 0 0" />
+                  <inertial pos="0.28 0 -0.2" quat="1.0 0.0 0.0 0.0" mass="1.9" diaginertia="1.0 1.0 1.0" />
+                  <geom name="r_ankle_collision" pos="0.055 0 -0.06" quat="1.0 0.0 0.0 0.0" type="box" size="0.125 0.07 0.01" class="collision" />
+                  <geom name="r_ankle_visual_0" pos="0.055 0 -0.06" quat="1.0 0.0 0.0 0.0" material="default_material" type="box" size="0.125 0.07 0.01" class="visual" />
+                  <geom name="r_ankle_visual_1" pos="0.1 0 0.0" quat="0.7071054825112363 0.0 0.7071080798594735 0.0" material="default_material" type="cylinder" size="0.05 0.05" class="visual" />
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+      <body name="LLEG_LINK1" pos="0 0.09 0" quat="1.0 0.0 0.0 0.0">
+        <joint name="LLEG_HIP_R" type="hinge" ref="0.0" class="motor" range="-20 90" axis="1 0 0" />
+        <joint name="LLEG_HIP_R_backlash" class="backlash" axis="1 0 0" />
+        <inertial pos="0 0.1 0" quat="1.0 0.0 0.0 0.0" mass="2.5" diaginertia="1.0 1.0 1.0" />
+        <geom name="LLEG_LINK1_visual" pos="0 0 0" quat="0.7071231599922605 0.0 0.0 0.7070904020014415" material="default_material" type="cylinder" size="0.05 0.05" class="visual" />
+        <body name="LLEG_LINK2" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+          <joint name="LLEG_HIP_P" type="hinge" ref="0.0" class="motor" range="-20 90" axis="0 1 0" />
+          <joint name="LLEG_HIP_P_backlash" class="backlash" axis="0 1 0" />
+          <inertial pos="0 0 -0.15" quat="1.0 0.0 0.0 0.0" mass="2" diaginertia="1.0 1.0 1.0" />
+          <geom name="LLEG_LINK2_visual" pos="0 0 0" quat="1 0 0 0" material="default_material" type="cylinder" size="0.05 0.05" class="visual" />
+          <body name="LLEG_LINK3" pos="0 0 -0.3535" quat="1.0 0.0 0.0 0.0">
+            <joint name="LLEG_HIP_Y" type="hinge" ref="0.0" class="motor" range="-30.0001 30.0001" axis="0 0 1" />
+            <joint name="LLEG_HIP_Y_backlash" class="backlash" axis="0 0 1" />
+            <inertial pos="0 0.04 0" quat="1.0 0.0 0.0 0.0" mass="5.1" diaginertia="1.0 1.0 1.0" />
+            <geom name="LLEG_LINK3_visual_0" pos="0 0 0.22675" quat="1.0 0.0 0.0 0.0" material="default_material" type="box" size="0.05 0.05 0.07675" class="visual" />
+            <geom name="LLEG_LINK3_visual_1" pos="0 0 0.1" quat="0.7071054825112363 0.7071080798594735 0.0 0.0" material="default_material" type="cylinder" size="0.05 0.05" class="visual" />
+            <body name="LLEG_LINK4" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+              <joint name="LLEG_KNEE" type="hinge" ref="0.0" class="motor" range="-120.035 40.107" axis="0 1 0" />
+              <joint name="LLEG_KNEE_backlash" class="backlash" axis="0 1 0" />
+              <inertial pos="0 0 -0.3" quat="1.0 0.0 0.0 0.0" mass="7" diaginertia="1.0 1.0 1.0" />
+              <geom name="LLEG_LINK4_visual_0" pos="0 0 0" quat="0.7071054825112363 0.7071080798594735 0.0 0.0" material="default_material" type="cylinder" size="0.05 0.05" class="visual" />
+              <geom name="LLEG_LINK4_visual_1" pos="0 0 -0.15" quat="1.0 0.0 0.0 0.0" material="default_material" type="box" size="0.05 0.05 0.1" class="visual" />
+              <body name="LLEG_LINK5" pos="0 0 -0.3" quat="1.0 0.0 0.0 0.0">
+                <joint name="LLEG_ANKLE_P" type="hinge" ref="0.0" class="motor" range="0 150" axis="0 1 0" />
+                <joint name="LLEG_ANKLE_P_backlash" class="backlash" axis="0 1 0" />
+                <inertial pos="-0.15 0 0" quat="1.0 0.0 0.0 0.0" mass="2.5" diaginertia="1.0 1.0 1.0" />
+                <geom name="LLEG_LINK5_visual" pos="0 0 0" quat="1 0 0 0" material="default_material" type="cylinder" size="0.05 0.05" class="visual" />
+                <body name="l_ankle" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+                  <joint name="LLEG_ANKLE_R" type="hinge" ref="0.0" class="motor" range="-72.7656 38.9611" axis="1 0 0" />
+                  <joint name="LLEG_ANKLE_R_backlash" class="backlash" axis="1 0 0" />
+                  <inertial pos="0.28 0 -0.2" quat="1.0 0.0 0.0 0.0" mass="1.9" diaginertia="1.0 1.0 1.0" />
+                  <geom name="l_ankle_collision" pos="0.055 0 -0.06" quat="1.0 0.0 0.0 0.0" type="box" size="0.125 0.07 0.01" class="collision" />
+                  <geom name="l_ankle_visual_0" pos="0.055 0 -0.06" quat="1.0 0.0 0.0 0.0" material="default_material" type="box" size="0.125 0.07 0.01" class="visual" />
+                  <geom name="l_ankle_visual_1" pos="0.1 0 0.0" quat="0.7071054825112363 0.0 0.7071080798594735 0.0" material="default_material" type="cylinder" size="0.05 0.05" class="visual" />
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+      <body name="WAIST_LINK1" pos="0 0 0.176" quat="1.0 0.0 0.0 0.0">
+        <joint name="WAIST_P" type="hinge" ref="0.0" class="motor" range="-72.7656 72.7656" axis="0 1 0" />
+        <joint name="WAIST_P_backlash" class="backlash" axis="0 1 0" />
+        <inertial pos="0 0 -0.1" quat="1.0 0.0 0.0 0.0" mass="6" diaginertia="1.0 1.0 1.0" />
+        <geom name="WAIST_LINK1_visual" pos="0 0 0" quat="1 0 0 0" material="WAIST_LINK1_APP" type="cylinder" size="0.025 0.025" class="visual" />
+        <body name="WAIST_LINK2" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+          <joint name="WAIST_R" type="hinge" ref="0.0" class="motor" range="-72.7656 72.7656" axis="1 0 0" />
+          <joint name="WAIST_R_backlash" class="backlash" axis="1 0 0" />
+          <inertial pos="0.11 0 0.25" quat="1.0 0.0 0.0 0.0" mass="30" diaginertia="1.0 1.0 1.0" />
+          <geom name="WAIST_LINK2_visual_0" pos="0 0 0" quat="0.7071054825112363 0.0 0.0 0.7071080798594735" material="WAIST_LINK2_APP" type="cylinder" size="0.025 0.025" class="visual" />
+          <geom name="WAIST_LINK2_visual_1" pos="0 0 0.1625" quat="1.0 0.0 0.0 0.0" material="WAIST_LINK2_APP" type="box" size="0.025 0.025 0.1375" class="visual" />
+          <body name="torso" pos="0 0 0.35" quat="1.0 0.0 0.0 0.0">
+            <joint name="CHEST" type="hinge" ref="0.0" class="motor" range="-72.7656 72.7656" axis="0 0 1" />
+            <joint name="CHEST_backlash" class="backlash" axis="0 0 1" />
+            <inertial pos="0 0 0" quat="1.0 0.0 0.0 0.0" mass="13" diaginertia="1.0 1.0 1.0" />
+            <geom name="torso_visual_0" pos="0 0 0" quat="0.7071054825112363 0.7071080798594735 0.0 0.0" material="WAIST_LINK3_APP" type="cylinder" size="0.025 0.05" class="visual" />
+            <geom name="torso_visual_1" pos="0 0 0" quat="1 0 0 0" material="WAIST_LINK3_APP" type="box" size="0.075 0.135 0.025" class="visual" />
+            <geom name="torso_visual_2" pos="0 0 0.065" quat="1.0 0.0 0.0 0.0" material="WAIST_LINK3_APP" type="box" size="0.025 0.025 0.015" class="visual" />
+            <geom name="torso_visual_3" pos="-0.015 0 0.16" quat="1.0 0.0 0.0 0.0" material="WAIST_LINK3_APP" type="box" size="0.155 0.08 0.08" class="visual" />
+            <body name="RARM_LINK1" pos="0 -0.21 0" quat="1.0 0.0 0.0 0.0">
+              <joint name="RARM_SHOULDER_P" type="hinge" ref="0.0" class="motor" range="-90 45" axis="0 1 0" />
+              <joint name="RARM_SHOULDER_P_backlash" class="backlash" axis="0 1 0" />
+              <inertial pos="0.1 0 0" quat="1.0 0.0 0.0 0.0" mass="3" diaginertia="1.0 1.0 1.0" />
+              <geom name="RARM_LINK1_visual" pos="0 0.05 0.0" quat="1.0 0.0 0.0 0.0" material="default_material" type="cylinder" size="0.025 0.025" class="visual" />
+              <body name="RARM_LINK2" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+                <joint name="RARM_SHOULDER_R" type="hinge" ref="0.0" class="motor" range="0.5 164.5" axis="1 0 0" />
+                <joint name="RARM_SHOULDER_R_backlash" class="backlash" axis="1 0 0" />
+                <inertial pos="0 0 -0.1" quat="1.0 0.0 0.0 0.0" mass="0.6" diaginertia="1.0 1.0 1.0" />
+                <geom name="RARM_LINK2_visual_0" pos="0 0.0 0.0" quat="0.7071054825112363 0.0 0.0 0.7071080798594735" material="default_material" type="cylinder" size="0.025 0.025" class="visual" />
+                <geom name="RARM_LINK2_visual_1" pos="0 0.0 -0.1065" quat="1.0 0.0 0.0 0.0" material="default_material" type="box" size="0.025 0.025 0.0815" class="visual" />
+                <body name="RARM_LINK3" pos="0 0 -0.263" quat="1.0 0.0 0.0 0.0">
+                  <joint name="RARM_SHOULDER_Y" type="hinge" ref="0.0" class="motor" range="-139 139" axis="0 0 1" />
+                  <joint name="RARM_SHOULDER_Y_backlash" class="backlash" axis="0 0 1" />
+                  <inertial pos="0 0 0" quat="1.0 0.0 0.0 0.0" mass="1" diaginertia="1.0 1.0 1.0" />
+                  <geom name="RARM_LINK3_visual" pos="0 0.0 0.05" quat="0.7071054825112363 0.7071080798594735 0.0 0.0" material="default_material" type="cylinder" size="0.025 0.025" class="visual" />
+                  <body name="RARM_LINK4" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+                    <joint name="RARM_ELBOW" type="hinge" ref="0.0" class="motor" range="-128 0.2" axis="0 1 0" />
+                    <joint name="RARM_ELBOW_backlash" class="backlash" axis="0 1 0" />
+                    <inertial pos="0 0 -0.3" quat="1.0 0.0 0.0 0.0" mass="0.6" diaginertia="1.0 1.0 1.0" />
+                    <geom name="RARM_LINK4_visual_0" pos="0 0 0" quat="1 0 0 0" material="WAIST_LINK3_APP" type="cylinder" size="0.025 0.025" class="visual" />
+                    <geom name="RARM_LINK4_visual_1" pos="0 0.0 -0.0985" quat="1.0 0.0 0.0 0.0" material="default_material" type="box" size="0.025 0.025 0.0735" class="visual" />
+                    <body name="RARM_LINK5" pos="0 0 -0.247" quat="1.0 0.0 0.0 0.0">
+                      <joint name="RARM_WRIST_Y" type="hinge" ref="0.0" class="motor" range="-144 144" axis="0 0 1" />
+                      <joint name="RARM_WRIST_Y_backlash" class="backlash" axis="0 0 1" />
+                      <inertial pos="0 0 0.1" quat="1.0 0.0 0.0 0.0" mass="0.4" diaginertia="1.0 1.0 1.0" />
+                      <geom name="RARM_LINK5_visual" pos="0 0 0.05" quat="0.7071054825112363 0.7071080798594735 0.0 0.0" material="default_material" type="cylinder" size="0.025 0.025" class="visual" />
+                      <body name="RARM_LINK6" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+                        <joint name="RARM_WRIST_P" type="hinge" ref="0.0" class="motor" range="-78.5 78.5" axis="0 1 0" />
+                        <joint name="RARM_WRIST_P_backlash" class="backlash" axis="0 1 0" />
+                        <inertial pos="-0.1 0 0" quat="1.0 0.0 0.0 0.0" mass="0.4" diaginertia="1.0 1.0 1.0" />
+                        <geom name="RARM_LINK6_visual_0" pos="0 0 0" quat="1 0 0 0" material="default_material" type="cylinder" size="0.025 0.025" class="visual" />
+                        <geom name="RARM_LINK6_visual_1" pos="0 0 0" quat="0.7071054825112363 0.0 0.0 0.7071080798594735" material="default_material" type="cylinder" size="0.025 0.025" class="visual" />
+                        <geom name="RARM_LINK6_visual_2" pos="0 0.03 -0.1125" quat="1.0 0.0 0.0 0.0" material="default_material" type="box" size="0.025 0.015 0.0875" class="visual" />
+                        <body name="r_wrist" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+                          <joint name="RARM_WRIST_R" type="hinge" ref="0.0" class="motor" range="-39 39" axis="1 0 0" />
+                          <joint name="RARM_WRIST_R_backlash" class="backlash" axis="1 0 0" />
+                          <inertial pos="0 0 -0.1" quat="1.0 0.0 0.0 0.0" mass="0.4" diaginertia="1.0 1.0 1.0" />
+                          <geom name="r_wrist_visual" pos="0 -0.03 -0.1" quat="1.0 0.0 0.0 0.0" material="default_material" type="box" size="0.025 0.015 0.075" class="visual" />
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+            <body name="LARM_LINK1" pos="0 0.21 0" quat="1.0 0.0 0.0 0.0">
+              <joint name="LARM_SHOULDER_P" type="hinge" ref="0.0" class="motor" range="-90 45" axis="0 1 0" />
+              <joint name="LARM_SHOULDER_P_backlash" class="backlash" axis="0 1 0" />
+              <inertial pos="0.1 0 0" quat="1.0 0.0 0.0 0.0" mass="3" diaginertia="1.0 1.0 1.0" />
+              <geom name="LARM_LINK1_visual" pos="0 -0.05 0.0" quat="1.0 0.0 0.0 0.0" material="default_material" type="cylinder" size="0.025 0.025" class="visual" />
+              <body name="LARM_LINK2" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+                <joint name="LARM_SHOULDER_R" type="hinge" ref="0.0" class="motor" range="0.5 164.5" axis="1 0 0" />
+                <joint name="LARM_SHOULDER_R_backlash" class="backlash" axis="1 0 0" />
+                <inertial pos="0 0 -0.1" quat="1.0 0.0 0.0 0.0" mass="0.6" diaginertia="1.0 1.0 1.0" />
+                <geom name="LARM_LINK2_visual_0" pos="0 0.0 0.0" quat="0.7071054825112363 0.0 0.0 0.7071080798594735" material="default_material" type="cylinder" size="0.025 0.025" class="visual" />
+                <geom name="LARM_LINK2_visual_1" pos="0 0.0 -0.1065" quat="1.0 0.0 0.0 0.0" material="default_material" type="box" size="0.025 0.025 0.0815" class="visual" />
+                <body name="LARM_LINK3" pos="0 0 -0.263" quat="1.0 0.0 0.0 0.0">
+                  <joint name="LARM_SHOULDER_Y" type="hinge" ref="0.0" class="motor" range="-90 45" axis="0 0 1" />
+                  <joint name="LARM_SHOULDER_Y_backlash" class="backlash" axis="0 0 1" />
+                  <inertial pos="0 0 0" quat="1.0 0.0 0.0 0.0" mass="1" diaginertia="1.0 1.0 1.0" />
+                  <geom name="LARM_LINK3_visual" pos="0 0.0 0.05" quat="0.7071054825112363 0.7071080798594735 0.0 0.0" material="default_material" type="cylinder" size="0.025 0.025" class="visual" />
+                  <body name="LARM_LINK4" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+                    <joint name="LARM_ELBOW" type="hinge" ref="0.0" class="motor" range="-139 139" axis="0 1 0" />
+                    <joint name="LARM_ELBOW_backlash" class="backlash" axis="0 1 0" />
+                    <inertial pos="0 0 -0.3" quat="1.0 0.0 0.0 0.0" mass="0.6" diaginertia="1.0 1.0 1.0" />
+                    <geom name="LARM_LINK4_visual_0" pos="0 0 0" quat="1 0 0 0" material="WAIST_LINK3_APP" type="cylinder" size="0.025 0.025" class="visual" />
+                    <geom name="LARM_LINK4_visual_1" pos="0 0.0 -0.0985" quat="1.0 0.0 0.0 0.0" material="default_material" type="box" size="0.025 0.025 0.0735" class="visual" />
+                    <body name="LARM_LINK5" pos="0 0 -0.247" quat="1.0 0.0 0.0 0.0">
+                      <joint name="LARM_WRIST_Y" type="hinge" ref="0.0" class="motor" range="-128 0.2" axis="0 0 1" />
+                      <joint name="LARM_WRIST_Y_backlash" class="backlash" axis="0 0 1" />
+                      <inertial pos="0 0 0.1" quat="1.0 0.0 0.0 0.0" mass="0.4" diaginertia="1.0 1.0 1.0" />
+                      <geom name="LARM_LINK5_visual" pos="0 0 0.05" quat="0.7071054825112363 0.7071080798594735 0.0 0.0" material="default_material" type="cylinder" size="0.025 0.025" class="visual" />
+                      <body name="LARM_LINK6" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+                        <joint name="LARM_WRIST_P" type="hinge" ref="0.0" class="motor" range="-144 144" axis="0 1 0" />
+                        <joint name="LARM_WRIST_P_backlash" class="backlash" axis="0 1 0" />
+                        <inertial pos="-0.1 0 0" quat="1.0 0.0 0.0 0.0" mass="0.4" diaginertia="1.0 1.0 1.0" />
+                        <geom name="LARM_LINK6_visual_0" pos="0 0 0" quat="1 0 0 0" material="default_material" type="cylinder" size="0.025 0.025" class="visual" />
+                        <geom name="LARM_LINK6_visual_1" pos="0 0 0" quat="0.7071054825112363 0.0 0.0 0.7071080798594735" material="default_material" type="cylinder" size="0.025 0.025" class="visual" />
+                        <geom name="LARM_LINK6_visual_2" pos="0 0.03 -0.1125" quat="1.0 0.0 0.0 0.0" material="default_material" type="box" size="0.025 0.015 0.0875" class="visual" />
+                        <body name="l_wrist" pos="0 0 0" quat="1.0 0.0 0.0 0.0">
+                          <joint name="LARM_WRIST_R" type="hinge" ref="0.0" class="motor" range="-78.5 78.5" axis="1 0 0" />
+                          <joint name="LARM_WRIST_R_backlash" class="backlash" axis="1 0 0" />
+                          <inertial pos="0 0 -0.1" quat="1.0 0.0 0.0 0.0" mass="0.4" diaginertia="1.0 1.0 1.0" />
+                          <geom name="l_wrist_visual" pos="0 -0.03 -0.1" quat="1.0 0.0 0.0 0.0" material="default_material" type="box" size="0.025 0.015 0.075" class="visual" />
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+      <site name="BODY_site" pos="0 0 0" quat="1 0 0 0" />
+      <camera name="front_camera" mode="track" fovy="90.0" quat="4.329780281177467e-17 4.329780281177466e-17 0.7071067811865475 0.7071067811865476" pos="0.0 2.0 0.5" />
+      <camera name="side_camera" mode="track" fovy="90.0" quat="-0.5 -0.4999999999999999 0.5 0.5000000000000001" pos="-2.0 0.0 0.5" />
+    </body>
+    <geom name="floor" class="floor" size="0 0 0.05" />
+  </worldbody>
+
+  <actuator>
+    <motor name="RLEG_HIP_R_ctrl" joint="RLEG_HIP_R" class="motor" />
+    <motor name="RLEG_HIP_P_ctrl" joint="RLEG_HIP_P" class="motor" />
+    <motor name="RLEG_HIP_Y_ctrl" joint="RLEG_HIP_Y" class="motor" />
+    <motor name="RLEG_KNEE_ctrl" joint="RLEG_KNEE" class="motor" />
+    <motor name="RLEG_ANKLE_P_ctrl" joint="RLEG_ANKLE_P" class="motor" />
+    <motor name="RLEG_ANKLE_R_ctrl" joint="RLEG_ANKLE_R" class="motor" />
+    <motor name="LLEG_HIP_R_ctrl" joint="LLEG_HIP_R" class="motor" />
+    <motor name="LLEG_HIP_P_ctrl" joint="LLEG_HIP_P" class="motor" />
+    <motor name="LLEG_HIP_Y_ctrl" joint="LLEG_HIP_Y" class="motor" />
+    <motor name="LLEG_KNEE_ctrl" joint="LLEG_KNEE" class="motor" />
+    <motor name="LLEG_ANKLE_P_ctrl" joint="LLEG_ANKLE_P" class="motor" />
+    <motor name="LLEG_ANKLE_R_ctrl" joint="LLEG_ANKLE_R" class="motor" />
+    <motor name="WAIST_P_ctrl" joint="WAIST_P" class="motor" />
+    <motor name="WAIST_R_ctrl" joint="WAIST_R" class="motor" />
+    <motor name="CHEST_ctrl" joint="CHEST" class="motor" />
+    <motor name="RARM_SHOULDER_P_ctrl" joint="RARM_SHOULDER_P" class="motor" />
+    <motor name="RARM_SHOULDER_R_ctrl" joint="RARM_SHOULDER_R" class="motor" />
+    <motor name="RARM_SHOULDER_Y_ctrl" joint="RARM_SHOULDER_Y" class="motor" />
+    <motor name="RARM_ELBOW_ctrl" joint="RARM_ELBOW" class="motor" />
+    <motor name="RARM_WRIST_Y_ctrl" joint="RARM_WRIST_Y" class="motor" />
+    <motor name="RARM_WRIST_P_ctrl" joint="RARM_WRIST_P" class="motor" />
+    <motor name="RARM_WRIST_R_ctrl" joint="RARM_WRIST_R" class="motor" />
+    <motor name="LARM_SHOULDER_P_ctrl" joint="LARM_SHOULDER_P" class="motor" />
+    <motor name="LARM_SHOULDER_R_ctrl" joint="LARM_SHOULDER_R" class="motor" />
+    <motor name="LARM_SHOULDER_Y_ctrl" joint="LARM_SHOULDER_Y" class="motor" />
+    <motor name="LARM_ELBOW_ctrl" joint="LARM_ELBOW" class="motor" />
+    <motor name="LARM_WRIST_Y_ctrl" joint="LARM_WRIST_Y" class="motor" />
+    <motor name="LARM_WRIST_P_ctrl" joint="LARM_WRIST_P" class="motor" />
+    <motor name="LARM_WRIST_R_ctrl" joint="LARM_WRIST_R" class="motor" />
+  </actuator>
+
+  <sensor>
+    <framepos name="BODY_site_pos" objtype="site" objname="BODY_site" />
+    <framequat name="BODY_site_quat" objtype="site" objname="BODY_site" />
+    <framelinvel name="BODY_site_linvel" objtype="site" objname="BODY_site" />
+    <frameangvel name="BODY_site_angvel" objtype="site" objname="BODY_site" />
+    <velocimeter name="BODY_site_vel" site="BODY_site" />
+    <accelerometer name="IMU_acc" site="IMU_site" noise="0.001" />
+    <gyro name="IMU_gyro" site="IMU_site" noise="0.01" />
+    <magnetometer name="IMU_mag" site="IMU_site" />
+    <framepos name="IMU_site_pos" objtype="site" objname="IMU_site" />
+    <framequat name="IMU_site_quat" objtype="site" objname="IMU_site" />
+    <framelinvel name="IMU_site_linvel" objtype="site" objname="IMU_site" />
+    <frameangvel name="IMU_site_angvel" objtype="site" objname="IMU_site" />
+    <velocimeter name="IMU_site_vel" site="IMU_site" />
+  </sensor>
+</mujoco>
