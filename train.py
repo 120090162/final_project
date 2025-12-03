@@ -42,6 +42,9 @@ from mujoco_playground.config import manipulation_params
 import tensorboardX
 import wandb
 
+import envs
+import envs.params as env_params
+
 
 xla_flags = os.environ.get("XLA_FLAGS", "")
 xla_flags += " --xla_gpu_triton_gemm_any=True"
@@ -163,7 +166,9 @@ _TRAINING_METRICS_STEPS = flags.DEFINE_integer(
 
 
 def get_rl_config(env_name: str) -> config_dict.ConfigDict:
-    if env_name in mujoco_playground.manipulation._envs:
+    if env_name in envs.ALL_ENV_NAMES:
+        return env_params.brax_ppo_config(env_name, _IMPL.value)
+    elif env_name in mujoco_playground.manipulation._envs:
         if _VISION.value:
             return manipulation_params.brax_vision_ppo_config(env_name, _IMPL.value)
         return manipulation_params.brax_ppo_config(env_name, _IMPL.value)

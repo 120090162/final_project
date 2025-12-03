@@ -63,7 +63,7 @@ python -c "import mujoco_playground"  # 开始下载MuJoCo Menagerie库
 - 训练
 ```bash
 ./scripts/run_train.sh \
-    --env_name=Go1JoystickFlatTerrain \
+    --env_name=Go2JoystickFlatTerrain \
     --use_wandb=True \
     --log_training_metrics=True \
     --run_evals=False
@@ -71,7 +71,7 @@ python -c "import mujoco_playground"  # 开始下载MuJoCo Menagerie库
 - 单纯可视化
 ```bash
 ./scripts/run_train.sh \
-    --env_name=Go1JoystickFlatTerrain \
+    --env_name=Go2JoystickFlatTerrain \
     --play_only=True \
     --load_checkpoint_path=logs/<env_name>/<timestamp>/checkpoints \
     --num_videos=<video_num_to_render>
@@ -90,7 +90,6 @@ python utils/brax_to_onnx.py \
 # sim to sim
 uv pip install pygame
 
-python examples/play_go1_keyboard.py
-
-python play.py --policy_name=<_policy前面的名称>
+python sim2sim/play_go1_keyboard.py --policy_name=<_policy前面的名称>
+python sim2sim/play_go2_keyboard.py --policy_name=<_policy前面的名称>
 ```

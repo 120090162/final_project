@@ -30,6 +30,17 @@ import tf2onnx
 
 from params import _ONNX_DIR
 
+if __name__ == "__main__":
+    import sys
+
+    sys.stdout = open(sys.stdout.fileno(), mode="w", buffering=1)
+    sys.stderr = open(sys.stderr.fileno(), mode="w", buffering=1)
+    # Add the current directory to Python path to find module
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+import envs
+import envs.params as env_params
+
 _CHECKPOINT_PATH = flags.DEFINE_string(
     "checkpoint_path",
     None,
@@ -50,7 +61,9 @@ _IMPL = flags.DEFINE_enum("impl", "jax", ["jax", "warp"], "MJX implementation")
 
 def get_rl_config(env_name: str):
     """Get RL config for the environment."""
-    if env_name in mujoco_playground.manipulation._envs:
+    if env_name in envs.ALL_ENV_NAMES:
+        return env_params.brax_ppo_config(env_name, _IMPL.value)
+    elif env_name in mujoco_playground.manipulation._envs:
         return manipulation_params.brax_ppo_config(env_name, _IMPL.value)
     elif env_name in mujoco_playground.locomotion._envs:
         return locomotion_params.brax_ppo_config(env_name, _IMPL.value)

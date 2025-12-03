@@ -1,27 +1,9 @@
-# Copyright 2025 DeepMind Technologies Limited
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# ==============================================================================
 """Deploy an MJX policy in ONNX format to C MuJoCo and play with it."""
 
-from etils import epath
 import mujoco
 import mujoco.viewer as viewer
 import numpy as np
 import onnxruntime as rt
-
-from mujoco_playground._src.locomotion.go1 import go1_constants
-from mujoco_playground._src.locomotion.go1.base import get_assets
 
 import os
 import sys
@@ -29,12 +11,23 @@ import sys
 sys.stdout = open(sys.stdout.fileno(), mode="w", buffering=1)
 sys.stderr = open(sys.stderr.fileno(), mode="w", buffering=1)
 
-# Add the current directory to Python path to find utils module
+# Add the current directory to Python path to find module
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from envs.go2 import go2_constants
+from envs.go2.base import get_assets
 
 from utils.keyboard_reader import KeyboardController
 from utils.params import _ONNX_DIR
+
+from absl import app
+from absl import flags
+
+_POLICY_NAME = flags.DEFINE_string(
+    "policy_name",
+    None,
+    f"Name of the policy. Must be located in {_ONNX_DIR}.",
+)
 
 
 class OnnxController:
@@ -99,11 +92,11 @@ class OnnxController:
             data.ctrl[:] = onnx_pred * self._action_scale + self._default_angles
 
 
-def load_callback(model=None, data=None):
+def load_callback(model=None, data=None, **kwargs):
     mujoco.set_mjcb_control(None)
 
     model = mujoco.MjModel.from_xml_path(
-        go1_constants.FEET_ONLY_ROUGH_TERRAIN_XML.as_posix(),
+        go2_constants.FEET_ONLY_ROUGH_TERRAIN_XML.as_posix(),
         assets=get_assets(),
     )
     data = mujoco.MjData(model)
@@ -116,7 +109,7 @@ def load_callback(model=None, data=None):
     model.opt.timestep = sim_dt
 
     policy = OnnxController(
-        policy_path=(_ONNX_DIR / "go1_policy.onnx").as_posix(),
+        policy_path=(_ONNX_DIR / f"{_POLICY_NAME.value}_policy.onnx").as_posix(),
         default_angles=np.array(model.keyframe("home").qpos[7:]),
         n_substeps=n_substeps,
         action_scale=0.5,
@@ -130,5 +123,18 @@ def load_callback(model=None, data=None):
     return model, data
 
 
-if __name__ == "__main__":
+def main(argv):
+    del argv  # Unused.
+
+    if _POLICY_NAME.value is None:
+        raise ValueError("Please provide a policy name with --policy_name flag.")
+
+    policy_path = _ONNX_DIR / f"{_POLICY_NAME.value}_policy.onnx"
+    if not policy_path.exists():
+        raise FileNotFoundError(f"Policy file not found: {policy_path}")
+
     viewer.launch(loader=load_callback)
+
+
+if __name__ == "__main__":
+    app.run(main)
