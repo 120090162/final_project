@@ -400,8 +400,11 @@ def main(argv):
         if _LOG_TRAINING_METRICS.value:
             if "episode/sum_reward" in metrics:
                 print(
-                    f"[{progress_pct:5.1f}%] Step {num_steps:,}/{total_timesteps:,} | "
-                    f"mean episode reward={metrics['episode/sum_reward']:.3f}"
+                    f"\r[{progress_pct:5.1f}%] Step {num_steps:,}/{total_timesteps:,} | "
+                    f"mean episode reward={metrics['episode/sum_reward']:.3f} | "
+                    f"ETA: {eta/60:.1f}min        ",
+                    end="",
+                    flush=True,
                 )
 
     # Load evaluation environment.
@@ -452,7 +455,7 @@ def main(argv):
         eval_env=eval_env,
     )
 
-    print("Done training.")
+    print("\nDone training.")
     if len(times) > 1:
         print(f"Time to JIT compile: {times[1] - times[0]}")
         print(f"Time to train: {times[-1] - times[1]}")

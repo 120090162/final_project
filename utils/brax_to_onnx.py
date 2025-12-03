@@ -194,24 +194,30 @@ def main(argv):
     # Resolve checkpoint path
     ckpt_path = epath.Path(_CHECKPOINT_PATH.value).resolve()
 
-    # If the path is an experiment directory (contains 'checkpoints' subfolder), use that
-    if (ckpt_path / "checkpoints").is_dir():
-        ckpt_path = ckpt_path / "checkpoints"
+    # Check if the path is a specific checkpoint (numeric directory name)
+    if ckpt_path.is_dir() and ckpt_path.name.isdigit():
+        # Direct checkpoint path, use as-is
+        print(f"Using specified checkpoint: {ckpt_path}")
+    else:
+        # If the path is an experiment directory (contains 'checkpoints' subfolder), use that
+        if (ckpt_path / "checkpoints").is_dir():
+            ckpt_path = ckpt_path / "checkpoints"
 
-    # Find the latest checkpoint if it's a directory
-    if ckpt_path.is_dir():
-        latest_ckpts = [
-            ckpt
-            for ckpt in ckpt_path.glob("*")
-            if ckpt.is_dir() and ckpt.name.isdigit()
-        ]
-        if not latest_ckpts:
-            raise ValueError(
-                f"No valid checkpoint directories found in {ckpt_path}. "
-                "Checkpoint directories should have numeric names."
-            )
-        latest_ckpts.sort(key=lambda x: int(x.name))
-        ckpt_path = latest_ckpts[-1]
+        # Find the latest checkpoint in the directory
+        if ckpt_path.is_dir():
+            latest_ckpts = [
+                ckpt
+                for ckpt in ckpt_path.glob("*")
+                if ckpt.is_dir() and ckpt.name.isdigit()
+            ]
+            if not latest_ckpts:
+                raise ValueError(
+                    f"No valid checkpoint directories found in {ckpt_path}. "
+                    "Checkpoint directories should have numeric names."
+                )
+            latest_ckpts.sort(key=lambda x: int(x.name))
+            ckpt_path = latest_ckpts[-1]
+            print(f"Auto-selected latest checkpoint: {ckpt_path}")
 
     print(f"Loading checkpoint from: {ckpt_path}")
 

@@ -4,9 +4,11 @@
 # 环境搭建
 
 **环境建议**
+在以下环境中完成了测试
 
-- 操作系统：Ubuntu 22.04 LTS x64
-- CUDA：12
+- 操作系统：Ubuntu 22.04/20.04 LTS x64
+- NVIDIA-SMI: >= 12.8
+- CUDA：12/11.8
 - CUDNN: 8.9
 
 ```bash
@@ -86,7 +88,7 @@ python utils/brax_to_onnx.py \
 
 ```bash
 # sim to sim
-uv pip install onnxruntime pygame
+uv pip install pygame
 
 python examples/play_go1_keyboard.py
 
