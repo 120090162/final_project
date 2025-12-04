@@ -38,7 +38,7 @@ FEET_GEOMS = [
 
 FEET_POS_SENSOR = [f"{site}_pos" for site in FEET_SITES]
 
-ROOT_BODY = "base"
+ROOT_BODY = "base_link"
 
 UPVECTOR_SENSOR = "upvector"
 GLOBAL_LINVEL_SENSOR = "global_linvel"

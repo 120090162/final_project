@@ -102,3 +102,8 @@ uv pip install urdf2mjcf
 
 python utils/urdf2xml.py --urdf_path=sample/robot.urdf
 ```
+
+```bash
+# visulize
+python examples/show_mjcf.py --mjcf_path=assets/sample/robot.xml
+```
