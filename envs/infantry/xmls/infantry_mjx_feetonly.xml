@@ -1,0 +1,110 @@
+<mujoco model="infantry">
+  <compiler angle="radian" meshdir="../../../assets/drago_infantry/meshes" autolimits="true"/>
+
+  <option iterations="1" ls_iterations="5" timestep="0.004" integrator="Euler">
+    <flag eulerdamp="disable"/>
+  </option>
+
+  <default>
+    <default class="robot">
+      <default class="motor">
+        <joint />
+        <motor />
+      </default>
+      <default class="visual">
+        <geom material="visualgeom" contype="0" conaffinity="0" group="2" />
+      </default>
+      <default class="collision">
+        <geom condim="3" contype="0" conaffinity="1" priority="1" group="1" solref="0.005 1" solimp="0.99 0.999 1e-05" friction="1 0.01 0.01" />
+        <!-- <geom material="collision_material" condim="3" contype="0" conaffinity="1" priority="1" group="1" solref="0.005 1" solimp="0.99 0.999 1e-05" friction="1 0.01 0.01" /> -->
+      </default>
+    </default>
+  </default>
+
+  <asset>
+    <!-- <material name="" rgba="0.866666666666667 0.909803921568627 1 1" /> -->
+    <!-- <material name="default_material" rgba="0.7 0.7 0.7 1" /> -->
+    <material name="visualgeom" rgba="0.2 0.2 0.2 1"/>
+    <!-- <material name="collision_material" rgba="1.0 0.28 0.1 0.9" /> -->
+    <mesh name="base_link.STL" file="base_link.STL" />
+    <mesh name="left_leg.STL" file="left_leg.STL" />
+    <mesh name="left_small_leg.STL" file="left_small_leg.STL" />
+    <mesh name="left_wheel.STL" file="left_wheel.STL" />
+    <mesh name="right_leg.STL" file="right_leg.STL" />
+    <mesh name="right_small_leg.STL" file="right_small_leg.STL" />
+    <mesh name="right_wheel.STL" file="right_wheel.STL" />
+  </asset>
+
+  <worldbody>
+    <body name="base_link" pos="0.00000000 0.00000000 0.03347355" quat="1 0 0 0" childclass="robot">
+      <freejoint name="floating_base" />
+      <geom name="base_link_collision" pos="0 0 0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="base_link.STL" class="collision" />
+      <geom name="base_link_visual" pos="0 0 0" quat="1.0 0.0 0.0 0.0" material="" type="mesh" mesh="base_link.STL" class="visual" />
+      <body name="left_leg" pos="0.0774339304506741 0.166046528452957 0.112513103962355" quat="1.0 0.0 0.0 0.0">
+        <joint name="left_leg" type="hinge" ref="0.0" class="motor" range="0 0" axis="0 -1 0" />
+        <inertial pos="-0.08288414341075 -0.00149912062952695 -0.0243138787714042" quat="1.0 0.0 0.0 0.0" mass="0.388175393997797" diaginertia="0.000297341897410301 0.00236326839124778 0.00210893664364893" />
+        <geom name="left_leg_collision" pos="0 0 0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="left_leg.STL" class="collision" />
+        <geom name="left_leg_visual" pos="0 0 0" quat="1.0 0.0 0.0 0.0" material="" type="mesh" mesh="left_leg.STL" class="visual" />
+        <body name="left_small_leg" pos="-0.205577835151374 0.0095000000000004 -0.0629504066267599" quat="1.0 0.0 0.0 0.0">
+          <joint name="left_small_leg" type="hinge" ref="0.0" class="motor" range="0 0" axis="0 1 0" />
+          <inertial pos="0.0725245855736034 0.00619237874935236 -0.0267094868548866" quat="1.0 0.0 0.0 0.0" mass="0.372624828898574" diaginertia="0.000587261193183515 0.00389383240250772 0.00334828910958965" />
+          <geom name="left_small_leg_collision" pos="0 0 0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="left_small_leg.STL" class="collision" />
+          <geom name="left_small_leg_visual" pos="0 0 0" quat="1.0 0.0 0.0 0.0" material="" type="mesh" mesh="left_small_leg.STL" class="visual" />
+          <body name="left_wheel" pos="0.240043707112258 0.0310500000000015 -0.083036249167477" quat="1.0 0.0 0.0 0.0">
+            <joint name="left_wheel" type="hinge" ref="0.0" class="motor" axis="0 1 0" />
+            <inertial pos="0.000115991570766388 -0.00625993174818712 -0.000160100211085354" quat="1.0 0.0 0.0 0.0" mass="0.576889812400606" diaginertia="0.00055800865160433 0.000966908089769022 0.000558593604726454" />
+            <geom name="left_wheel_collision" pos="0 0 0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="left_wheel.STL" class="collision" />
+            <geom name="left_wheel_visual" pos="0 0 0" quat="1.0 0.0 0.0 0.0" material="" type="mesh" mesh="left_wheel.STL" class="visual" />
+          </body>
+        </body>
+      </body>
+      <body name="right_leg" pos="0.0774339304506787 -0.186353471547043 0.112513103962355" quat="1.0 0.0 0.0 0.0">
+        <joint name="right_leg" type="hinge" ref="0.0" class="motor" range="0 0" axis="0 1 0" />
+        <inertial pos="-0.0817472425401045 0.000200231692095681 -0.0239057858668973" quat="1.0 0.0 0.0 0.0" mass="0.378066882639783" diaginertia="0.000290769273886285 0.00232136008727879 0.0020714965621928" />
+        <geom name="right_leg_collision" pos="0 0 0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="right_leg.STL" class="collision" />
+        <geom name="right_leg_visual" pos="0 0 0" quat="1.0 0.0 0.0 0.0" material="" type="mesh" mesh="right_leg.STL" class="visual" />
+        <body name="right_small_leg" pos="-0.20557783515135 -0.0109999999999999 -0.0629504066268527" quat="1.0 0.0 0.0 0.0">
+          <joint name="right_small_leg" type="hinge" ref="0.0" class="motor" range="0 0" axis="0 -1 0" />
+          <inertial pos="0.0723504778983492 -0.00618088751947335 -0.0260982932587692" quat="1.0 0.0 0.0 0.0" mass="0.371276470595448" diaginertia="0.000563832189147727 0.00389292891807555 0.00337078271601135" />
+          <geom name="right_small_leg_collision" pos="0 0 0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="right_small_leg.STL" class="collision" />
+          <geom name="right_small_leg_visual" pos="0 0 0" quat="1.0 0.0 0.0 0.0" material="" type="mesh" mesh="right_small_leg.STL" class="visual" />
+          <body name="right_wheel" pos="0.24004370711208 -0.0435500000000003 -0.0830362491679966" quat="1.0 0.0 0.0 0.0">
+            <joint name="right_wheel" type="hinge" ref="0.0" class="motor" range="0 0" axis="0 -1 0" />
+            <inertial pos="0.000159941562660131 0.0187599317481871 0.000116210234541475" quat="1.0 0.0 0.0 0.0" mass="0.576889812400577" diaginertia="0.000558654137114336 0.000966908089768991 0.000557948119216415" />
+            <geom name="right_wheel_collision" pos="0 0 0" quat="1.0 0.0 0.0 0.0" type="mesh" mesh="right_wheel.STL" class="collision" />
+            <geom name="right_wheel_visual" pos="0 0 0" quat="1.0 0.0 0.0 0.0" material="" type="mesh" mesh="right_wheel.STL" class="visual" />
+          </body>
+        </body>
+      </body>
+      <site name="base_link_site" pos="0 0 0" quat="1 0 0 0" />
+      <camera name="front_camera" mode="track" fovy="90.0" quat="4.329780281177467e-17 4.329780281177466e-17 0.7071067811865475 0.7071067811865476" pos="0.0 2.0 0.5" />
+      <camera name="side_camera" mode="track" fovy="90.0" quat="-0.5 -0.4999999999999999 0.5 0.5000000000000001" pos="-2.0 0.0 0.5" />
+    </body>
+  </worldbody>
+
+  <actuator>
+    <motor name="left_leg_ctrl" joint="left_leg" class="motor" />
+    <motor name="left_small_leg_ctrl" joint="left_small_leg" class="motor" />
+    <motor name="left_wheel_ctrl" joint="left_wheel" class="motor" />
+    <motor name="right_leg_ctrl" joint="right_leg" class="motor" />
+    <motor name="right_small_leg_ctrl" joint="right_small_leg" class="motor" />
+    <motor name="right_wheel_ctrl" joint="right_wheel" class="motor" />
+  </actuator>
+
+  <contact>
+    <exclude body1="base_link" body2="left_leg" />
+    <exclude body1="left_leg" body2="left_small_leg" />
+    <exclude body1="left_small_leg" body2="left_wheel" />
+    <exclude body1="base_link" body2="right_leg" />
+    <exclude body1="right_leg" body2="right_small_leg" />
+    <exclude body1="right_small_leg" body2="right_wheel" />
+  </contact>
+
+  <sensor>
+    <framepos name="base_link_site_pos" objtype="site" objname="base_link_site" />
+    <framequat name="base_link_site_quat" objtype="site" objname="base_link_site" />
+    <framelinvel name="base_link_site_linvel" objtype="site" objname="base_link_site" />
+    <frameangvel name="base_link_site_angvel" objtype="site" objname="base_link_site" />
+    <velocimeter name="base_link_site_vel" site="base_link_site" />
+  </sensor>
+</mujoco>
