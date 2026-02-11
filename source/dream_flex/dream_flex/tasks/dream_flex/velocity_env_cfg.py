@@ -27,8 +27,7 @@ from isaaclab.envs import ManagerBasedEnv
 from isaaclab.assets import Articulation
 import torch
 
-import dream_flex.tasks.dream_flex.mdp as mdp
-# import isaaclab_tasks.manager_based.locomotion.velocity.mdp as mdp
+import isaaclab_tasks.manager_based.locomotion.velocity.mdp as mdp
 
 ##
 # Pre-defined configs
@@ -73,7 +72,7 @@ class MySceneCfg(InteractiveSceneCfg):
     height_scanner = RayCasterCfg(
         prim_path="{ENV_REGEX_NS}/Robot/base",
         offset=RayCasterCfg.OffsetCfg(pos=(0.0, 0.0, 20.0)),
-        attach_yaw_only=True,
+        ray_alignment="yaw",
         pattern_cfg=patterns.GridPatternCfg(resolution=0.1, size=[1.6, 1.0]),
         debug_vis=False,
         mesh_prim_paths=["/World/ground"],
@@ -82,7 +81,7 @@ class MySceneCfg(InteractiveSceneCfg):
     # lidar_scanner = RayCasterCfg(
     #     prim_path="{ENV_REGEX_NS}/Robot/Head_lower",
     #     offset=RayCasterCfg.OffsetCfg(pos=(0, 0, 0.5)),
-    #     attach_yaw_only=True,
+    #     ray_alignment="yaw",
     #     pattern_cfg=patterns.LidarPatternCfg(
     #         channels=8,
     #         vertical_fov_range=[-45.0, 45.0], 

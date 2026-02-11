@@ -9,6 +9,9 @@
 
 import argparse
 import sys
+import os
+# Append source directory to path to allow importing dream_flex if not installed
+sys.path.append(os.path.join(os.path.dirname(__file__), "../source/dream_flex"))
 
 from isaaclab.app import AppLauncher
 
@@ -65,7 +68,8 @@ import numpy as np
 
 # Imports for Environment Configuration
 from isaaclab.utils import configclass
-from isaaclab_tasks.manager_based.locomotion.velocity.config.go2.rough_env_cfg import UnitreeGo2RoughEnvCfg
+from dream_flex.tasks.dream_flex.config.go2.rough_env_cfg import UnitreeGo2RoughEnvCfg
+# from isaaclab_tasks.manager_based.locomotion.velocity.config.go2.rough_env_cfg import UnitreeGo2RoughEnvCfg
 from isaaclab.managers import ObservationGroupCfg as ObsGroup
 from isaaclab.managers import ObservationTermCfg as ObsTerm
 from isaaclab.envs import mdp

@@ -6,7 +6,6 @@
 from isaaclab.utils import configclass
 
 from dream_flex.tasks.dream_flex.velocity_env_cfg import LocomotionVelocityRoughEnvCfg, LocomotionVelocityRoughEnvCfg_RMA
-# from isaaclab_tasks.manager_based.locomotion.velocity.velocity_env_cfg import LocomotionVelocityRoughEnvCfg, LocomotionVelocityRoughEnvCfg_RMA
 
 ##
 # Pre-defined configs

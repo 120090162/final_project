@@ -10,9 +10,8 @@
 import argparse
 import sys
 import os
-
 # Append source directory to path to allow importing dream_flex if not installed
-sys.path.append(os.path.join(os.path.dirname(__file__), "../source/dream_flex"))  # noqa: E402
+sys.path.append(os.path.join(os.path.dirname(__file__), "../source/dream_flex"))
 
 
 from isaaclab.app import AppLauncher
@@ -61,8 +60,7 @@ import platform
 from packaging import version
 
 # check minimum supported rsl-rl version
-RSL_RL_VERSION = "2.3.0"
-# RSL_RL_VERSION = "3.0.1"
+RSL_RL_VERSION = "3.0.1"
 installed_version = metadata.version("rsl-rl-lib")
 if version.parse(installed_version) < version.parse(RSL_RL_VERSION):
     if platform.system() == "Windows":
@@ -86,6 +84,7 @@ from datetime import datetime
 # Imports for Environment Configuration
 from isaaclab.utils import configclass
 from dream_flex.tasks.dream_flex.config.go2.rough_env_cfg import UnitreeGo2RoughEnvCfg
+# from isaaclab_tasks.manager_based.locomotion.velocity.config.go2.rough_env_cfg import UnitreeGo2RoughEnvCfg
 from isaaclab.managers import ObservationGroupCfg as ObsGroup
 from isaaclab.managers import ObservationTermCfg as ObsTerm
 from isaaclab.envs import mdp
@@ -141,7 +140,7 @@ gym.register(
 )
 
 import omni
-# from rsl_rl.runners import DistillationRunner
+from rsl_rl.runners import DistillationRunner
 from rsl_rl_dreamwaq.on_policy_runner import OnPolicyRunner
 
 from isaaclab.envs import (
@@ -251,8 +250,8 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
     # create runner from rsl-rl
     if agent_cfg.class_name == "OnPolicyRunner":
         runner = OnPolicyRunner(env, agent_cfg.to_dict(), log_dir=log_dir, device=agent_cfg.device)
-    # elif agent_cfg.class_name == "DistillationRunner":
-    #     runner = DistillationRunner(env, agent_cfg.to_dict(), log_dir=log_dir, device=agent_cfg.device)
+    elif agent_cfg.class_name == "DistillationRunner":
+        runner = DistillationRunner(env, agent_cfg.to_dict(), log_dir=log_dir, device=agent_cfg.device)
     else:
         raise ValueError(f"Unsupported runner class: {agent_cfg.class_name}")
     # write git state to logs

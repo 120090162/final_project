@@ -70,5 +70,9 @@ isaaclab.bat -p scripts/reinforcement_learning/rsl_rl/train.py --task=Isaac-Velo
 
 - run !!!
 ```bash
+# train
 python scripts/train.py --task Isaac-Velocity-Rough-Go2-DreamWaQ-v0 --headless
+
+# play
+python scripts/play.py --task Isaac-Velocity-Rough-Go2-DreamWaQ-v0
 ```
