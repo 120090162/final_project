@@ -28,14 +28,14 @@ class UnitreeGo2ShipEnvCfg(LocomotionVelocityRoughEnvCfg):
         self.scene.height_scanner.prim_path = "{ENV_REGEX_NS}/Robot/base"
         # self.scene.robot.actuators["base_legs"] = ActuatorNetMLPCfg(
         #     joint_names_expr=[".*_hip_joint", ".*_thigh_joint", ".*_calf_joint"],
-        #     network_file="/path/to/your/trained_actuator_net.pt", # 실제 .pt 파일 경로
-        #     pos_scale=-1.0,           # 네트워크 학습 시 사용된 스케일링 값 (데이터 수집 방식에 따라 다름)
+        #     network_file="/path/to/your/trained_actuator_net.pt", # Actual .pt file path
+        #     pos_scale=-1.0,           # Scaling value used during network training (depends on data collection method)
         #     vel_scale=1.0,
         #     torque_scale=1.0,
-        #     input_order="pos_vel",    # 입력 순서 (pos_error, vel) 또는 (vel, pos_error) 등
-        #     input_idx=[0, 1, 2],      # 입력 인덱스
-        #     effort_limit=23.5,        # Go2 스펙
-        #     velocity_limit=30.0,      # Go2 스펙
+        #     input_order="pos_vel",    # Input order (pos_error, vel) or (vel, pos_error) etc
+        #     input_idx=[0, 1, 2],      # Input indices
+        #     effort_limit=23.5,        # Go2 spec
+        #     velocity_limit=30.0,      # Go2 spec
         #     saturation_effort=23.5,
         # )
 
@@ -49,12 +49,12 @@ class UnitreeGo2ShipEnvCfg(LocomotionVelocityRoughEnvCfg):
         # reduce action scale
         self.actions.joint_pos.scale = 0.25
 
-        # [추가] 액션 클리핑: 목표 관절 위치가 물리적 한계를 넘지 않도록 강제 제한 (안전 장치)
-        # 값은 라디안 단위이며, 필요에 따라 로봇의 실제 관절 한계값으로 더 좁게 설정 가능
+        # [Added] Action clipping: Limit target joint positions to not exceed physical limits (safety mechanism)
+        # Values are in radians, can be set narrower than actual robot limits if needed
         self.actions.joint_pos.clip = {
-            ".*_hip_joint": (-0.84, 0.84),        # 좌우 벌림 제한
-            ".*_thigh_joint": (-4.0, 1.5),        # 앞뒤 허벅지 (앞/뒤 다리 통합하여 넓게 잡음)
-            ".*_calf_joint": (-2.72, -0.84),      # 종아리 (무릎 굽힘 제한)
+            ".*_hip_joint": (-0.84, 0.84),        # Hip abduction limit
+            ".*_thigh_joint": (-4.0, 1.5),        # Thigh forward/backward (integrated for wider range)
+            ".*_calf_joint": (-2.72, -0.84),      # Calf (knee flexion limit)
         }
 
         # ============ COMMAND CONFIGURATION ============
@@ -115,24 +115,24 @@ class UnitreeGo2ShipEnvCfg(LocomotionVelocityRoughEnvCfg):
 
         # # Core locomotion rewards
         # # Linear Velocity Tracking
-        # self.rewards.track_lin_vel_xy_exp.weight = 1.5  # 주요 보상
-        # self.rewards.track_ang_vel_z_exp.weight = 0.5   # 각속도 추적 보상
+        # self.rewards.track_lin_vel_xy_exp.weight = 1.5  # Main reward
+        # self.rewards.track_ang_vel_z_exp.weight = 0.5   # Angular velocity tracking reward
         # # Body stability  
-        # self.rewards.flat_orientation_l2.weight = -1.0  # 자세 페널티
-        # self.rewards.lin_vel_z_l2.weight = -0.5         # 수직 속도 페널티
-        # self.rewards.ang_vel_xy_l2.weight = -0.05       # 각속도 페널티
+        # self.rewards.flat_orientation_l2.weight = -1.0  # Posture penalty
+        # self.rewards.lin_vel_z_l2.weight = -0.5         # Vertical velocity penalty
+        # self.rewards.ang_vel_xy_l2.weight = -0.05       # Angular velocity penalty
         # # Joint and action penalties
-        # self.rewards.dof_torques_l2.weight = -0.0005    # 토크 페널티
-        # self.rewards.dof_acc_l2.weight = -6.25e-7       # 가속도 페널티
-        # self.rewards.dof_pos_limits.weight = -6.25e-7   # 관절 위치 한계 페널티
-        # self.rewards.action_rate_l2.weight = -0.1       # 액션 변화율 페널티
+        # self.rewards.dof_torques_l2.weight = -0.0005    # Torque penalty
+        # self.rewards.dof_acc_l2.weight = -6.25e-7       # Acceleration penalty
+        # self.rewards.dof_pos_limits.weight = -6.25e-7   # Joint position limit penalty
+        # self.rewards.action_rate_l2.weight = -0.1       # Action rate penalty
 
         # # Foot contact rewards
         # self.rewards.feet_air_time.params["sensor_cfg"].body_names = ".*_foot"
-        # self.rewards.feet_air_time.weight = 0.5         # 발 접촉 보상 
+        # self.rewards.feet_air_time.weight = 0.5         # Foot contact reward
         # # Fix unwanted contacts body name pattern and disable for better terrain adaptation
         # self.rewards.undesired_contacts.params["sensor_cfg"].body_names = ".*_thigh|.*_hip|Head_lower"
-        # self.rewards.undesired_contacts.weight = -0.4   # 접촉 페널티
+        # self.rewards.undesired_contacts.weight = -0.4   # Contact penalty
 
         # ============ TERMINATION CONFIGURATION ============
         self.terminations.base_contact.params["sensor_cfg"].body_names = "base"
@@ -171,9 +171,9 @@ class UnitreeGo2ShipEnvCfg_PLAY(UnitreeGo2ShipEnvCfg):
         # remove random gravity event
         self.events.randomize_gravity = None
 
-        # # [권장] 랜덤 명령어가 자동으로 바뀌지 않게 설정 (무한대 시간 설정)
+        # # [Recommended] Configure random commands not to change automatically (set to infinite time)
         # self.commands.base_velocity.resampling_time_range = (1.0e9, 1.0e9) 
-        # self.commands.base_velocity.debug_vis = True # 화살표로 명령 방향 보기
+        # self.commands.base_velocity.debug_vis = True # Visualize command direction with arrows
 
 @configclass
 class UnitreeGo2ShipEnvCfg_RMA(UnitreeGo2ShipEnvCfg):

@@ -17,8 +17,8 @@ class UnitreeGo2FlatEnvCfg(UnitreeGo2RoughEnvCfg):
         super().__post_init__()
 
         # override rewards
-        # Linear Velocity Tracking - 페널티 합(~2.5)의 절반(1.25)보다 크게
-        self.rewards.track_lin_vel_xy_exp.weight = 10.0  # 다른 모든 페널티의 합의 절반보다 커야 함
+        # Linear Velocity Tracking - set larger than half (1.25) of the sum of penalties (~2.5)
+        self.rewards.track_lin_vel_xy_exp.weight = 10.0  # Must be larger than half the sum of all penalties
         self.rewards.flat_orientation_l2.weight = -2.5
         self.rewards.feet_air_time.weight = 0.25
 

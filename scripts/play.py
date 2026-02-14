@@ -219,11 +219,11 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
     # obtain the trained policy for inference
     policy = runner.get_inference_policy(device=env.unwrapped.device)
 
-    # # === [추가 1] 키보드 컨트롤러 설정 ===
-    # # pos_sensitivity: 이동 속도 민감도 (m/s)
-    # # rot_sensitivity: 회전 속도 민감도 (rad/s)
+    # # === [新增 1] 键盘控制器设置 ===
+    # # pos_sensitivity: 移动速度灵敏度 (m/s)
+    # # rot_sensitivity: 旋转速度灵敏度 (rad/s)
     # teleop_interface = Se3Keyboard(Se3KeyboardCfg(sim_device=env.unwrapped.device, pos_sensitivity=1.0, rot_sensitivity=1.0))
-    # print(teleop_interface) # 터미널에 조작법(W,A,S,D...)이 출력됩니다.
+    # print(teleop_interface) # 终端会输出操作方法(W,A,S,D...)。
     # # ==================================
 
     # extract the neural network module
@@ -315,28 +315,28 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
         start_time = time.time()
         # run everything in inference mode
         with torch.inference_mode():
-            # # === [추가 2] 키보드 명령 주입 ===
-            # # 1. 키보드 입력 받기 (delta 값 수신)
+            # # === [新增 2] 注入键盘指令 ===
+            # # 1. 接收键盘输入 (接收 delta 值)
             # delta_pose = teleop_interface.advance()
             # delta_vel = delta_pose[0:3]
             # delta_ang_vel = delta_pose[3:6]
             
-            # # 2. 입력값이 있을 때만 명령 업데이트 (없으면 0 또는 이전 값 유지 등 정책에 따라 다름)
-            # # 여기서는 매 스텝 키 입력을 반영하도록 작성합니다.
+            # # 2. 仅在有输入值时更新指令 (如果没有，保留0或以前的值等，取决于策略)
+            # # 这里编写为每步反映按键输入。
             
-            # # 환경의 로봇 개수 확인
+            # # 检查环境中的机器人数量
             # num_envs = env.unwrapped.scene.num_envs
             # device = env.unwrapped.device
             
-            # # 3. 커맨드 텐서 생성 (모든 환경에 동일한 명령 적용)
+            # # 3. 创建命令张量 (对所有环境应用相同的命令)
             # cmd_tensor = torch.zeros(num_envs, 3, device=device)
             # cmd_tensor[:, 0] = delta_vel[0] # Forward/Back (W/S)
             # cmd_tensor[:, 1] = delta_vel[1] # Left/Right (A/D)
             # cmd_tensor[:, 2] = delta_ang_vel[2] # Yaw Turn (Q/E)
             
-            # # 4. Command Manager에 강제 주입
-            # # 주의: env가 Wrapper로 감싸져 있으므로 .unwrapped를 통해 접근해야 합니다.
-            # # "base_velocity"는 config에서 정의한 이름과 일치해야 합니다.
+            # # 4. 强制注入 Command Manager
+            # # 注意: env 被 Wrapper 包裹，因此必须通过 .unwrapped 访问。
+            # # "base_velocity" 必须与 config 中定义的名称一致。
             # if hasattr(env.unwrapped, "command_manager"):
             #     env.unwrapped.command_manager.get_command("base_velocity")[:] = cmd_tensor
             # # ================================

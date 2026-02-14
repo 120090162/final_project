@@ -41,9 +41,9 @@ class UnitreeGo2StairEnvCfg(LocomotionVelocityRoughEnvCfg):
         self.actions.joint_pos.scale = 0.25  # Default is 0.25
 
         self.actions.joint_pos.clip = {
-            ".*_hip_joint": (-0.84, 0.84),        # 좌우 벌림 제한
-            ".*_thigh_joint": (-4.0, 1.5),        # 앞뒤 허벅지 (앞/뒤 다리 통합하여 넓게 잡음)
-            ".*_calf_joint": (-2.72, -0.84),      # 종아리 (무릎 굽힘 제한)
+            ".*_hip_joint": (-0.84, 0.84),        # Hip abduction limit (left-right)
+            ".*_thigh_joint": (-4.0, 1.5),        # Thigh forward-backward (integrated for wider range)
+            ".*_calf_joint": (-2.72, -0.84),      # Calf (knee flexion limit)
         }
 
         # ============ EVENT CONFIGURATION ============
@@ -78,24 +78,24 @@ class UnitreeGo2StairEnvCfg(LocomotionVelocityRoughEnvCfg):
 
         # # Core locomotion rewards
         # # Linear Velocity Tracking
-        # self.rewards.track_lin_vel_xy_exp.weight = 1.5  # 주요 보상 
-        # self.rewards.track_ang_vel_z_exp.weight = 0.5   # 각속도 추적 보상 
+        # self.rewards.track_lin_vel_xy_exp.weight = 1.5  # Main reward 
+        # self.rewards.track_ang_vel_z_exp.weight = 0.5   # Angular velocity tracking reward 
         # # Body stability  
-        # self.rewards.flat_orientation_l2.weight = -1.0  # 자세 페널티
-        # self.rewards.lin_vel_z_l2.weight = -0.5         # 수직 속도 페널티
-        # self.rewards.ang_vel_xy_l2.weight = -0.05       # 각속도 페널티
+        # self.rewards.flat_orientation_l2.weight = -1.0  # Posture penalty
+        # self.rewards.lin_vel_z_l2.weight = -0.5         # Vertical velocity penalty
+        # self.rewards.ang_vel_xy_l2.weight = -0.05       # Angular velocity penalty
         # # Joint and action penalties
-        # self.rewards.dof_torques_l2.weight = -0.0005    # 토크 페널티
-        # self.rewards.dof_acc_l2.weight = -6.25e-7       # 가속도 페널티
-        # self.rewards.dof_pos_limits.weight = -6.25e-7   # 관절 위치 한계 페널티
-        # self.rewards.action_rate_l2.weight = -0.1       # 액션 변화율 페널티
+        # self.rewards.dof_torques_l2.weight = -0.0005    # Torque penalty
+        # self.rewards.dof_acc_l2.weight = -6.25e-7       # Acceleration penalty
+        # self.rewards.dof_pos_limits.weight = -6.25e-7   # Joint position limit penalty
+        # self.rewards.action_rate_l2.weight = -0.1       # Action rate penalty
 
         # # Foot contact rewards
         # self.rewards.feet_air_time.params["sensor_cfg"].body_names = ".*_foot"
-        # self.rewards.feet_air_time.weight = 0.5         # 발 접촉 보상
+        # self.rewards.feet_air_time.weight = 0.5         # Foot contact reward
         # # Fix unwanted contacts body name pattern and disable for better terrain adaptation
         # self.rewards.undesired_contacts.params["sensor_cfg"].body_names = ".*_thigh|.*_hip|Head_lower"
-        # self.rewards.undesired_contacts.weight = -0.4   # 접촉 페널티
+        # self.rewards.undesired_contacts.weight = -0.4   # Contact penalty
         
         
         # # ============ COMMAND CONFIGURATION ============
