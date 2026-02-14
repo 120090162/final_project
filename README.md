@@ -1,5 +1,5 @@
 # final project
-
+refer to https://github.com/unitreerobotics/unitree_rl_lab
 ## Quick start
 
 - Install Isaac Lab v2.3.0 by following the [installation guide](https://isaac-sim.github.io/IsaacLab/release/2.3.0/source/setup/installation/pip_installation.html).
@@ -70,9 +70,36 @@ isaaclab.bat -p scripts/reinforcement_learning/rsl_rl/train.py --task=Isaac-Velo
 
 - run !!!
 ```bash
+git clone https://github.com/120090162/final_project.git -b isaaclab
+cd final_project
 # train
 python scripts/train.py --task Isaac-Velocity-Rough-Go2-DreamWaQ-v0 --headless
 
 # play
 python scripts/play.py --task Isaac-Velocity-Rough-Go2-DreamWaQ-v0
 ```
+
+## unitree model
+Download unitree robot description files
+
+  *Method 1: Using USD Files*
+  - Download unitree usd files from [unitree_model](https://huggingface.co/datasets/unitreerobotics/unitree_model/tree/main), keeping folder structure
+    ```bash
+    git clone https://huggingface.co/datasets/unitreerobotics/unitree_model
+    ```
+  - Config `UNITREE_MODEL_DIR` in `source/unitree_rl_lab/unitree_rl_lab/assets/robots/unitree.py`.
+
+    ```bash
+    UNITREE_MODEL_DIR = "</home/user/projects/unitree_usd>"
+    ```
+
+  *Method 2: Using URDF Files [Recommended]* Only for Isaacsim >= 5.0
+  -  Download unitree robot urdf files from [unitree_ros](https://github.com/unitreerobotics/unitree_ros)
+      ```
+      git clone https://github.com/unitreerobotics/unitree_ros.git
+      ```
+  - Config `UNITREE_ROS_DIR` in `source/unitree_rl_lab/unitree_rl_lab/assets/robots/unitree.py`.
+    ```bash
+    UNITREE_ROS_DIR = "</home/user/projects/unitree_ros/unitree_ros>"
+    ```
+  - [Optional]: change *robot_cfg.spawn* if you want to use urdf files
