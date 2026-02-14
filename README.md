@@ -86,7 +86,7 @@ python -m tensorboard.main --logdir=logs
 python scripts/play.py --task Unitree-Go2-Velocity-DWAQ --num_envs 10
 ```
 
-## unitree model
+## [Options] unitree model
 Download unitree robot description files
 
   *Method 1: Using USD Files*
@@ -110,3 +110,13 @@ Download unitree robot description files
     UNITREE_ROS_DIR = "</home/user/projects/unitree_ros/unitree_ros>"
     ```
   - [Optional]: change *robot_cfg.spawn* if you want to use urdf files
+
+## Sim2Sim
+this part only for linux platform, following is an example process
+
+- Ubuntu 22.04
+- CUDA 12.8
+
+```bash
+
+```
