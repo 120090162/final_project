@@ -73,10 +73,17 @@ isaaclab.bat -p scripts/reinforcement_learning/rsl_rl/train.py --task=Isaac-Velo
 git clone https://github.com/120090162/final_project.git -b isaaclab
 cd final_project
 # train
-python scripts/train.py --task Isaac-Velocity-Rough-Go2-DreamWaQ-v0 --headless
+python scripts/train.py --headless \
+    --task Unitree-Go2-Velocity-DWAQ \
+    --num_envs 4096 \
+    --max_iterations 1000 \
+    --headless
+
+# view logs
+python -m tensorboard.main --logdir=logs
 
 # play
-python scripts/play.py --task Isaac-Velocity-Rough-Go2-DreamWaQ-v0
+python scripts/play.py --task Unitree-Go2-Velocity-DWAQ --num_envs 10
 ```
 
 ## unitree model
