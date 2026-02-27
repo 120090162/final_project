@@ -210,6 +210,6 @@ __marimo__/
 
 logs/
 *.mp4
-*.TXT
 
 outputs/
+!deploy/thirdparty/onnxruntime-linux-x64-1.22.0/lib

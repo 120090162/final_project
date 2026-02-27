@@ -84,6 +84,16 @@ python -m tensorboard.main --logdir=logs
 
 # play
 python scripts/play.py --task Unitree-Go2-Velocity-DWAQ --num_envs 10
+
+# resume train
+python scripts/train.py --headless \
+    --task Unitree-Go2-Velocity-DWAQ \
+    --num_envs 4096 \
+    --max_iterations 1000 \
+    --resume \
+    --headless \
+    --load_run 2026-01-13_12-48-23 \
+    --checkpoint model_7200.pt
 ```
 
 ## [Options] unitree model
