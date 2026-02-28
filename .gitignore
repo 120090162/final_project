@@ -212,4 +212,6 @@ logs/
 *.mp4
 
 outputs/
-!deploy/thirdparty/onnxruntime-linux-x64-1.22.0/lib
+deploy/third_party/
+
+MUJOCO_LOG.TXT
