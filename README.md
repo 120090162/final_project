@@ -143,6 +143,15 @@ chmod +x build.sh
 ```
 
 ## Sim2Real
+we recommend the [Ethernet Connection](https://support.unitree.com/home/zh/developer/Quick_start) way to deploy policy on a real Go2 robot.
+
+Connect one end of the Ethernet cable to the Go2 robot and the other end to your computer. Then, enable USB Ethernet on the computer and configure it. The IP address of the onboard computer on the Go2 robot is `192.168.123.161`, so the computer's USB Ethernet address should be set to the same network segment as the robot. For example, enter `192.168.123.222` in the "Address" field (you can replace `222` with another number).
+
+Use the `ifconfig` command to find the name of the network interface for the 123 network segment, such as `enxf8e43b808e06`. In the following steps, replace `<YOUR_NETWORK_INTERFACE>` with the actual network interface name.
+
+```bash
+./cmake_build/bin/rl_real_go2 <YOUR_NETWORK_INTERFACE>
+```
 
 ## Control with Gamepad or Keyboard
 
