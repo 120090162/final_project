@@ -132,7 +132,7 @@ this part only for linux platform, following is an example process
 ```bash
 # 安装依赖
 sudo apt update
-sudo apt install cmake g++ build-essential libyaml-cpp-dev libeigen3-dev libboost-all-dev libspdlog-dev libfmt-dev libtbb-dev liblcm-dev
+sudo apt install cmake g++ build-essential libyaml-cpp-dev libeigen3-dev libboost-all-dev libspdlog-dev libfmt-dev libtbb-dev liblcm-dev libglfw3-dev
 
 cd deploy
 chmod +x build.sh
