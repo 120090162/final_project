@@ -73,7 +73,15 @@ isaaclab.bat -p scripts/reinforcement_learning/rsl_rl/train.py --task=Isaac-Velo
 - run !!!
 ```bash
 git clone https://github.com/120090162/final_project.git -b isaaclab
+
+# 确保git lfs的安装
+# ubuntu: sudo apt install git-lfs
+# 去 [Git LFS 官网](https://git-lfs.github.com/) 下载并安装。
+
 cd final_project
+git lfs install
+git lfs pull
+
 # train
 python scripts/train.py --headless \
     --task Unitree-Go2-Velocity-DWAQ \
